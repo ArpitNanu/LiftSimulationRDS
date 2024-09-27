@@ -1,5 +1,9 @@
-const floorInput = document.getElementById("floorInput");
-const LiftInput = document.getElementById("liftFloor");
+const floorInput = document.getElementById("floorInput").value;
+let floorNumber = parseInt(floorInput);
+//console.log(floorInput,floorNumber)
+const LiftInput = document.getElementById("liftFloor").value;
+let LiftNumber = parseInt(LiftInput);
+//console.log(LiftInput,LiftNumber)
 const liftContainer = document.createElement("div");
 const submitButton = document.getElementById("submitButton");
 const container = document.getElementById("container");
@@ -12,26 +16,26 @@ let targetFloors = []; // for storing the click value of buttons
 
 //on Submit button and check for validation
 submitButton.addEventListener("click", () => {
-  if (!LiftInput.value && !floorInput.value) {
-    alert("Please Enter number to generate Floors and Lifts");
-  } else if (LiftInput.value == 0 || floorInput.value == 0) {
+  // if (!LiftNumber || !floorNumber) {
+  //   alert("Please Enter number to generate Floors and Lifts");
+  // }
+  if (LiftNumber == 0 || floorNumber == 0) {
     alert("Value can't be zero");
-  } else if (LiftInput.value < 0 || floorInput.value < 0) {
+  } else if (LiftNumber < 0 || floorNumber < 0) {
     alert("No negative values are allowed");
   } else {
     container.innerHTML = " ";
     liftContainer.innerHTML = "";
-    for (let i = floorInput.value; i > 0; i--) {
+    for (let i = floorNumber; i > 0; i--) {
       // make floors
-      createFloors(i, LiftInput.value);
+      createFloors(i, LiftNumber);
     }
 
     //empty input box
-    LiftInput.value = "";
-    floorInput.value = "";
+    LiftNumber = "";
+    floorNumber = "";
   }
 });
- 
 
 let x = 0;
 
@@ -78,21 +82,21 @@ function LiftStatus(clickedFloor) {
     targetFloors.push(clickedFloor);
   }
 }
-// for this function i use claude ai for pieces 
-function MoveLift(clickedFloor, pos) { 
+// for this function i use claude ai for pieces
+function MoveLift(clickedFloor, pos) {
   const elevators = document.getElementsByClassName("lift-div");
 
   const elevator = elevators[pos];
 
   let currentFloor = elevator.getAttribute("onfloor");
-  let duration = Math.abs(parseInt(clickedFloor) - parseInt(currentFloor)) * 2; // for this praticular statement i checked approved code from RDS discord 
+  let duration = Math.abs(parseInt(clickedFloor) - parseInt(currentFloor)) * 2; // for this praticular statement i checked approved code from RDS discord
 
   elevator.setAttribute("onfloor", clickedFloor);
 
   elevator.style.transition = `transform ${duration}s linear`;
   elevator.style.transform = `translateY(-${
-    100 * parseInt(clickedFloor) - 100 
-  }px)`; 
+    100 * parseInt(clickedFloor) - 100
+  }px)`;
   elevator.classList.add("busy");
 
   setTimeout(() => {
@@ -113,7 +117,7 @@ function MoveLift(clickedFloor, pos) {
     }
   }, duration * 1000 + 7000);
 }
-// create floor and lifts 
+// create floor and lifts
 // tip: draw make 4 floors using html static divs and do css than you have just use js for forLoop, creatediv, give classname.
 function createFloors(createFloors, createLifts) {
   const floorDiv = document.createElement("div");
